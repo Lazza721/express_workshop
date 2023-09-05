@@ -4,17 +4,31 @@
   "description": "An API REST using express.js",
   "main": "index.js",
   "scripts": {
+    "start": "nodemon index",
     "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "comentarios": {
+    "comentario": "se pone start para que inicie el servidor ya que le asignamos el nombre de nuestro index o como lo queremos llamar y se inicia con NPM START"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Lazza721/express_workshop.git"
   },
   "keywords": [
     "api",
     "rest",
     "express",
-    "nodejs"
+    "nodejs",
+    "jwt"
   ],
   "author": "Victor Hugo García Lazzarini",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.18.2"
-  }
+    "express": "^4.18.2",
+    "nodemon": "^3.0.1"
+  },
+  "bugs": {
+    "url": "https://github.com/Lazza721/express_workshop/issues"
+  },
+  "homepage": "https://github.com/Lazza721/express_workshop#readme"
 }
