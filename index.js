@@ -29,7 +29,7 @@ app.get("/", (req, res, next) => {
 /*si solo ponemos nombre es una variable estatica que no nos srive para poner muchos registros
 en este caso para que sea dinamico tenemos que poner /:nombre_de_la_variable
 */
-app.get("/:pokemon", (req,res,next) => {
+app.get("/:pokemon/all", (req,res,next) => {
     res.status(200);
     res.send(pokemon);
 })
@@ -46,11 +46,29 @@ app.get("/:pokemon", (req,res,next) => {
  RES: La respuesta que vamos a dar, comtestar la peticion que pedimos
  NEXT:
 */
+//Ponemos ([0-9]{1,3}) para dcir que llama a una funcion para admitir solo numeros
+app.get('/pokemon/:id([0-9]{1,3})', (req, res, next) => {
+    const id = req.params.id -1;
+    if(id >= 0 && id <= 151){
+        res.status(200);
+        res.send(pokemon[req.params.id - 1]); //le restamos un 1 para obtener la pso real del arreglo
+    }else{
+        res.status(404);
+        res.send("No se encontro ningun elemento")
+    }    
+})
 
-app.get('/pokemon/:id', (req, res, next) => {
+app.get('/pokemon/:name', (req, res, next) => {
+    const name = req.params.name;
+    for(i =0; i< pokemon.length;i++){
+        if(pokemon[i].name == name){
+            res.status(200);
+            res.send(pokemon[i]);
+        }
+    }
+    res.status(404); //funciona como un return, cuando no encuentra algo en el for se va a lo siguiente
+    res.send("Pokemon no encontrado"); 
 
-    res.status(200);
-    res.send(pokemon[req.params.id - 1]);
 })
 
 /*levantamos el servidor 
