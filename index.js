@@ -8,6 +8,8 @@ se va a meter a la carpeta node_modules y va a buscar la que tenga el nombre exp
 
 const app = express(); //llamando al constructor de express
 
+const pokedex = require('./pokedex.json'); //importamos nuestra base de datos 
+
 /*
 VERBOS HTTP:
 GET: Obtener, es decir si entro en un login hago peticion al server y me regresa una pagina
@@ -19,8 +21,9 @@ DELETE:Elimina un recurso
 */
 
 app.get("/", (req, res, next) => {
+    const pokemon = pokedex.pokemon;
     res.status(200);
-    res.send("Bienvenido");
+    res.send(pokemon);
 });
 
 /*si solo ponemos nombre es una variable estatica que no nos srive para poner muchos registros
