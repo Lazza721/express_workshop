@@ -8,7 +8,8 @@ se va a meter a la carpeta node_modules y va a buscar la que tenga el nombre exp
 
 const app = express(); //llamando al constructor de express
 
-const pokedex = require('./pokedex.json'); //importamos nuestra base de datos 
+const {pokemon} = require('./pokedex.json'); //importamos nuestra base de datos 
+//al poner {pokemon} estamos diciendo que queremos que inporte todo tal cual esta
 
 /*
 VERBOS HTTP:
@@ -21,20 +22,20 @@ DELETE:Elimina un recurso
 */
 
 app.get("/", (req, res, next) => {
-    const pokemon = pokedex.pokemon;
     res.status(200);
-    res.send(pokemon);
+    res.send("bienvenido al pokedex");
 });
 
 /*si solo ponemos nombre es una variable estatica que no nos srive para poner muchos registros
 en este caso para que sea dinamico tenemos que poner /:nombre_de_la_variable
 */
-app.get("/:name", (req,res,next) => {
-    console.log(req.params.name);
+app.get("/:pokemon", (req,res,next) => {
     res.status(200);
-    res.send("Hola,"+ req.params.name);
+    res.send(pokemon);
 })
 
+//console.log(req.params.name);
+// res.send("Hola,"+ req.params.name);
 /*como todos los navegadores ejecutan peticiones get apartir de una diagonal por eso ponemos 
  www.facebook/HugoLazzarini
  por eos ponemos esa para que lo ejecute sin errores 
@@ -46,6 +47,12 @@ app.get("/:name", (req,res,next) => {
  NEXT:
 */
 
+app.get('/pokemon/:id', (req, res, next) => {
+
+    res.status(200);
+    res.send(pokemon[req.params.id - 1]);
+})
+
 /*levantamos el servidor 
 el primero es el puerto
 el segundo parametro es una funcion que se ejecutará cuanod el servidor este escuchando 
@@ -55,5 +62,6 @@ el segundo parametro es una funcion que se ejecutará cuanod el servidor este es
 app.listen(process.env.PORT || 3000, () => {
     console.log("server is running...")
 });
+
 
 
