@@ -13,25 +13,25 @@ const {pokemon} = require('./pokedex.json'); //importamos nuestra base de datos
 
 /*
 VERBOS HTTP:
-GET: Obtener, es decir si entro en un login hago peticion al server y me regresa una pagina
-POST: Guardar algo, cuando te registras en un sitio web quieres guardar esa información
-PATCH: Actualizacion de datos, supongamos se registra un usuario (nombre, apellido, edad) y solo quieres actiualizar alguno
-PUT: Actualizacion de datos, modifica todos los elementos a diferencia de PATCH
+GET: Obtener recursos, es decir si entro en un login hago peticion al server y me regresa una pagina
+POST: Guardar algo, almacenar cuando te registras en un sitio web quieres guardar esa información
+PUT : Modificar todo un recurso
+PaTCH: Modifica una parte de un recurso, supongamos se registra un usuario (nombre, apellido, edad) y solo quieres actiualizar alguno 
 DELETE:Elimina un recurso
 
 */
 
 app.get("/", (req, res, next) => {
-    res.status(200);
-    res.send("bienvenido al pokedex");
+    
+    return res.status(200).send("bienvenido al pokedex");
 });
 
 /*si solo ponemos nombre es una variable estatica que no nos srive para poner muchos registros
 en este caso para que sea dinamico tenemos que poner /:nombre_de_la_variable
 */
-app.get("/:pokemon/all", (req,res,next) => {
-    res.status(200);
-    res.send(pokemon);
+app.get("/:pokemon", (req,res,next) => {
+    
+    return res.status(200).send(pokemon);
 })
 
 //console.log(req.params.name);
@@ -49,25 +49,27 @@ app.get("/:pokemon/all", (req,res,next) => {
 //Ponemos ([0-9]{1,3}) para dcir que llama a una funcion para admitir solo numeros
 app.get('/pokemon/:id([0-9]{1,3})', (req, res, next) => {
     const id = req.params.id -1;
-    if(id >= 0 && id <= 151){
-        res.status(200);
-        res.send(pokemon[req.params.id - 1]); //le restamos un 1 para obtener la pso real del arreglo
-    }else{
-        res.status(404);
-        res.send("No se encontro ningun elemento")
-    }    
+    (id >= 0 && id <= 150) ? 
+    res.status(200).send(pokemon[req.params.id - 1]) : //le restamos un 1 para obtener la pso real del arreglo
+    res.status(404).send("No se encontro ningun elemento");
+       
 })
 
-app.get('/pokemon/:name', (req, res, next) => {
+//REGEX: Admitir solo REGEX 
+app.get('/pokemon/:name([A-Za-z]+)', (req, res, next) => {
     const name = req.params.name;
-    for(i =0; i< pokemon.length;i++){
-        if(pokemon[i].name == name){
-            res.status(200);
-            res.send(pokemon[i]);
-        }
-    }
-    res.status(404); //funciona como un return, cuando no encuentra algo en el for se va a lo siguiente
-    res.send("Pokemon no encontrado"); 
+
+      /*
+    pk: es una variable tipo arreglo
+    p: es una variable que va a iterar en el array de pokemon 
+    pokemon: es el array 
+    Operador ternario (condicion) ? if true retorna : false retorna;
+    */
+    const pk = pokemon.filter((p) => {
+        return (p.name.toUpperCase() == name.toUpperCase()) ? p : null;
+    });
+
+   (pk.length > 0) ? res.status(200).send(pk) : res.status(400).send("Pokemon no encontrado");
 
 })
 
