@@ -1,14 +1,19 @@
 //cuando haces un npm install--save lo estas instalando en el proyecto y no global
-
 const express = require("express"); 
+const bodyparser = require('body-parser');
 /*requeire se usa para importar archivos
 se va a meter a la carpeta node_modules y va a buscar la que tenga el nombre express y retornará el index 
 */
-
-
 const app = express(); //llamando al constructor de express
 
+app.use(express.json());//se usa 'use' cuanod queremos que todas las peticiones entren al servidor usen la misma funcion
+app.use(express.urlencoded({ extended: true }));
+
+
+
+
 const {pokemon} = require('./pokedex.json'); //importamos nuestra base de datos 
+const bodyParser = require("body-parser");
 //al poner {pokemon} estamos diciendo que queremos que inporte todo tal cual esta
 
 /*
@@ -26,10 +31,15 @@ app.get("/", (req, res, next) => {
     return res.status(200).send("bienvenido al pokedex");
 });
 
+
+app.post("/pokemon", (req,res,next) =>{
+    return res.status(200).send(req.body);
+});
+
 /*si solo ponemos nombre es una variable estatica que no nos srive para poner muchos registros
 en este caso para que sea dinamico tenemos que poner /:nombre_de_la_variable
 */
-app.get("/:pokemon", (req,res,next) => {
+app.get("/pokemon", (req,res,next) => {
     
     return res.status(200).send(pokemon);
 })
@@ -49,9 +59,11 @@ app.get("/:pokemon", (req,res,next) => {
 //Ponemos ([0-9]{1,3}) para dcir que llama a una funcion para admitir solo numeros
 app.get('/pokemon/:id([0-9]{1,3})', (req, res, next) => {
     const id = req.params.id -1;
-    (id >= 0 && id <= 150) ? 
-    res.status(200).send(pokemon[req.params.id - 1]) : //le restamos un 1 para obtener la pso real del arreglo
-    res.status(404).send("No se encontro ningun elemento");
+    if(id >= 0 && id <= 150) {
+        return res.status(200).send(pokemon[req.params.id - 1]); //le restamos un 1 para obtener la pso real del arreglo
+    }
+
+    return res.status(404).send("No se encontro ningun elemento");
        
 })
 
@@ -66,10 +78,13 @@ app.get('/pokemon/:name([A-Za-z]+)', (req, res, next) => {
     Operador ternario (condicion) ? if true retorna : false retorna;
     */
     const pk = pokemon.filter((p) => {
-        return (p.name.toUpperCase() == name.toUpperCase()) ? p : null;
+        return (p.name.toUpperCase() == name.toUpperCase()) && p;
     });
 
-   (pk.length > 0) ? res.status(200).send(pk) : res.status(400).send("Pokemon no encontrado");
+   if(pk.length > 0){
+     return res.status(200).send(pk);
+    }
+    return res.status(400).send("Pokemon no encontrado");
 
 })
 
