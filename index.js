@@ -5,7 +5,7 @@ const bodyparser = require('body-parser');
 se va a meter a la carpeta node_modules y va a buscar la que tenga el nombre express y retornará el index 
 */
 const app = express(); //llamando al constructor de express
-const pokemon = require('./routes/pokemon');
+const pokemon = require('./routes/pokemon.js');
 const morgan = require('morgan');
 
 
