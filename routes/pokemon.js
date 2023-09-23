@@ -15,7 +15,7 @@ en este caso para que sea dinamico tenemos que poner /:nombre_de_la_variable
 pokemon.get("/", async (req,res,next) => {
 
     const pkmon = await db.query("SELECT * FROM pokemon");    
-    return res.status(200).json(pkmon);
+    return res.status(200).json({code:1, message: pkmon});
 })
 
 //console.log(req.params.name);
@@ -33,12 +33,12 @@ pokemon.get("/", async (req,res,next) => {
 //Ponemos ([0-9]{1,3}) para dcir que llama a una funcion para admitir solo numeros
 pokemon.get('/:id([0-9]{1,3})', async (req, res, next) => {
     const id = req.params.id -1;
-    if(id >= 0 && id <= 150) {
+    if(id >= 1 && id <= 722) {
         const pkmon = await db.query("SELECT * FROM pokemon WHERE pok_id = "+id+";");  
-        return res.status(200).json(pkmon); //le restamos un 1 para obtener la pso real del arreglo
+        return res.status(200).json({code: 1, message: pkmon}); //le restamos un 1 para obtener la pso real del arreglo
     }
 
-    return res.status(404).send("No se encontro ningun elemento");
+    return res.status(404).send({code: 404, message:"pokemon no encontrado"});
        
 })
 
@@ -55,9 +55,9 @@ pokemon.get('/:name([A-Za-z]+)', async (req, res, next) => {
     */
 
    if(pkmon.length > 0){
-     return res.status(200).json(pkmon);
+    return res.status(200).json({code: 1, message: pkmon}); 
     }
-    return res.status(400).send("Pokemon no encontrado");
+    return res.status(404).send({code: 404, message:"pokemon no encontrado"});
 
 })
 

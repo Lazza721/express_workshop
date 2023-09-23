@@ -1,6 +1,5 @@
 //cuando haces un npm install--save lo estas instalando en el proyecto y no global
 const express = require('express'); 
-const bodyparser = require('body-parser');
 /*requeire se usa para importar archivos
 se va a meter a la carpeta node_modules y va a buscar la que tenga el nombre express y retornará el index 
 */
@@ -9,9 +8,10 @@ const pokemon = require('./routes/pokemon.js');
 const morgan = require('morgan');
 
 
-app.use(morgan('dev'));//dev: solo funciona en el desarrollo
-app.use(express.json());//se usa 'use' cuanod queremos que todas las peticiones entren al servidor usen la misma funcion
-app.use(express.urlencoded({ extended: true }));
+app.use(morgan('dev'));
+app.use(express.json());
+app.use(express.urlencoded({extended: true}));  //dev: solo funciona en el desarrollo
+
 
 
 
@@ -29,11 +29,14 @@ DELETE:Elimina un recurso
 
 app.get("/", (req, res, next) => {
     
-    return res.status(200).send("bienvenido al pokedex");
+    return res.status(200).json({code:1, message: "Bienvenido al Pokedex"});
 });
 
 app.use('/pokemon',pokemon);
 
+app.use((req,res,next) =>{
+    return res.status(404).json({code: 404, message: "URL NO ENCONTRADA"});
+});
 
 app.listen(process.env.PORT || 3000, () => {
     console.log("server is running...")
