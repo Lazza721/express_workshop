@@ -3,7 +3,60 @@ const pokemon = express.Router(); //nos ayuda a segmentar nuestro codigo y que p
 
 const db = require('../config/database.js'); //importamos nuestra base de datos .. salir carpeta
 
+pokemon.delete('/:id([0-9]{1,3})', async (req,res,next)=> {
 
+    const query = `DELETE FROM pokemon WHERE pok_id=${req.params.id}`;
+
+    const rows = await db.query(query);
+
+    if(rows.affectedRows == 1){
+        return res.status(200).json({code: 200, message: "pokemon borrado"});
+    }
+    return res.status(404).json({code: 404, message: "Pokemon no encontrado"});
+});
+
+pokemon.put('/:id([0-9]{1,3})', async (req,res,next)=>{
+    //PUT: se utiliza para acualizar todos los campos
+    
+    const { pok_name, pok_height, pok_weight, pok_base_experience } = req.body;
+
+    if(pok_name && pok_height && pok_weight && pok_base_experience){
+        let query = `UPDATE pokemon SET pok_name='${pok_name}',pok_height=${pok_height},`;
+        query += `pok_weight=${pok_weight}, pok_base_experience=${pok_base_experience} WHERE pok_id=${req.params.id}`;
+    
+        const rows = await db.query(query); 
+        
+        if(rows.affectedRows == 1){
+            return res.status(200).json({code: 200, message: "pokemon actualizado"});
+        }
+        //En post el 201 es como un 200 en get y dice que el recurso se creo
+        return res.status(404).json({code: 404, message: "Ocurrió un error"});
+
+    }
+
+    res.status(500).json({code: 500, message: "los campos no han sido mandados"});
+
+});
+
+pokemon.patch('/:id([0-9]{1,3})', async (req,res,next) => {
+        //PATCH: se va a cambiar 1 o mas datos pero no TODOS
+
+        if(req.body.pok_name){
+            let query = `UPDATE pokemon SET pok_name='${req.body.pok_name}' WHERE pok_id=${req.params.id}`;
+    
+        const rows = await db.query(query); 
+        
+        if(rows.affectedRows == 1){
+            return res.status(200).json({code: 200, message: "Pokemon Actualizado en patch"});
+        }
+        res.status(500).json({code: 500, message: "Ocurrio un error"});
+
+        }
+        res.status(500).json({code: 500, message: "campos incorrectos"});
+
+    
+
+});
 
 pokemon.post("/", async (req,res,next) =>{
 
