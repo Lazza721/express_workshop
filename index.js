@@ -5,6 +5,7 @@ se va a meter a la carpeta node_modules y va a buscar la que tenga el nombre exp
 */
 const app = express(); //llamando al constructor de express
 const pokemon = require('./routes/pokemon.js');
+const user = require('./routes/user.js');
 const morgan = require('morgan');
 
 
@@ -33,6 +34,7 @@ app.get("/", (req, res, next) => {
 });
 
 app.use('/pokemon',pokemon);
+app.use('/user',user);
 
 app.use((req,res,next) =>{
     return res.status(404).json({code: 404, message: "URL NO ENCONTRADA"});

@@ -95,7 +95,7 @@ pokemon.get("/", async (req,res,next) => {
 //console.log(req.params.name);
 // res.send("Hola,"+ req.params.name);
 /*como todos los navegadores ejecutan peticiones get apartir de una diagonal por eso ponemos 
- www.facebook/HugoLazzarini
+ www.facebook/HugoLazzarini 
  por eos ponemos esa para que lo ejecute sin errores 
 
  el segundo parametro: 
@@ -141,6 +141,6 @@ el segundo parametro es una funcion que se ejecutará cuanod el servidor este es
  () => {} es lo mismo que:  function () {} //es una función que no tiene nombre y no podemos volver a llamar
  */
 
- module.exports = pokemon;
+ module.exports = pokemon;  //añade al arbol de dependencias y lo añade como una libreria para usarlo como una desde cualquier lugar del codigo
 
 
