@@ -4,7 +4,7 @@ const user = express.Router(); //nos ayuda a segmentar nuestro codigo y que por 
 const db = require('../config/database.js'); //importamos nuestra base de datos .. salir carpeta
 
 
-user.post('/', async (req,res,next)=>{
+user.post('/signin', async (req,res,next)=>{
     const { user_name, user_mail, user_password } = req.body;
 
    if(user_name && user_mail && user_password){
@@ -39,7 +39,7 @@ user.post("/login", async(req,res,next) =>{
             user_id: rows[0].user_id,
             user_mail: rows[0].user_mail
 
-        }, "debugkey");
+        },"debugkey");
         //DEbugkey es una llave secreta y debe ser almacenada en una variable de entorno 
         return res.status(201).json({code: 201, message: token});
     }else{
@@ -50,6 +50,8 @@ user.post("/login", async(req,res,next) =>{
 
    
 
+
+   
 });
 
 user.get("/", async(req,res,next) => {
