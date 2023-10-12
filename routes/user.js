@@ -41,9 +41,9 @@ user.post("/login", async(req,res,next) =>{
 
         },"debugkey");
         //DEbugkey es una llave secreta y debe ser almacenada en una variable de entorno 
-        return res.status(201).json({code: 201, message: token});
+        return res.status(200).json({code: 200, message: token});
     }else{
-        res.status(401).json({code: 401, message: "Usuario y/o contraseña incorrecta"});
+        res.status(200).json({code: 200, message: "Usuario y/o contraseña incorrecta"});
     }
    }
    return res.status(500).json({code: 500, message: "campos incompletos"});
